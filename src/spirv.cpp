@@ -5,10 +5,10 @@
 
 #include "renderer.hpp"
 
-ScreenRenderer::ScreenRenderer(int width, int height)
-    : m_Compositor("../assets/shaders/test.vert.spv",
-                   "../assets/shaders/test.frag.spv", true),
-      m_Width(width), m_Height(height) {
+ScreenRenderer::ScreenRenderer(int width, int height, std::string vertShader,
+                               std::string fragShader)
+    : m_Program(vertShader, fragShader, true), m_Width(width),
+      m_Height(height) {
     m_Screen.AddVertexBuffer(std::make_shared<VertexBuffer>(
         std::vector<float>{
             -1.0f, 1.0f,  //
@@ -50,10 +50,10 @@ void ScreenRenderer::Render() {
     Renderer::EnableCullFace();
 
     glViewport(0, 0, m_Width, m_Height);
-    m_Compositor.Bind();
+    m_Program.Bind();
     m_Screen.Bind();
 
     Renderer::Draw(m_Screen.GetIndexBuffer()->GetCount());
 
-    m_Compositor.Unbind();
+    m_Program.Unbind();
 }

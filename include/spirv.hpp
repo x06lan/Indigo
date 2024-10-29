@@ -17,7 +17,8 @@ public:
         glm::mat4 viewProjection;
     };
 
-    ScreenRenderer(int width, int height);
+    ScreenRenderer(int width, int height, std::string vertShader,
+                   std::string fragShader);
 
     void Init();
 
@@ -27,7 +28,7 @@ public:
     void SetHeight(int height);
 
 private:
-    Program m_Compositor;
+    Program m_Program;
 
     VertexArray m_Screen;
     int m_Width;

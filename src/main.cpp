@@ -37,17 +37,15 @@ int main(int argc, char **argv) {
     Renderer::Init();
     Renderer::ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     Controller::InitGUI(window);
+    std::string vertPath = "../assets/shaders/test.vert.spv";
+    std::string fragPath = "../assets/shaders/test.frag.spv";
+    if (argc > 3) {
+        vertPath = argv[2];
+        fragPath = argv[3];
+    }
 
-    // Pipeline pipeline(SCREEN_WIDTH, SCREEN_HEIGHT);
-    ScreenRenderer screenRenderer(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    // pipeline.Init();
-
-    std::shared_ptr<Camera> mainCamera =
-        std::make_shared<Camera>(glm::vec3{350, 200, 100}, 45.0f,
-                                 window.GetAspectRatio(), 10.0f, 5000.0f);
-    // mainCamera->GetTransform().SetPosition({270, 200, 100});
-    Scene scene(mainCamera);
+    ScreenRenderer screenRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, vertPath,
+                                  fragPath);
 
     do {
 
