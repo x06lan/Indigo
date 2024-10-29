@@ -9,6 +9,8 @@ ScreenRenderer::ScreenRenderer(int width, int height, std::string vertShader,
                                std::string fragShader)
     : m_Program(vertShader, fragShader, true), m_Width(width),
       m_Height(height) {
+
+    // vertices
     m_Screen.AddVertexBuffer(std::make_shared<VertexBuffer>(
         std::vector<float>{
             -1.0f, 1.0f,  //
