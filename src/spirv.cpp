@@ -6,8 +6,8 @@
 #include "renderer.hpp"
 
 ScreenRenderer::ScreenRenderer(int width, int height)
-    : m_Compositor("../assets/shaders/test.vert",
-                   "../assets/shaders/test.frag"),
+    : m_Compositor("../assets/shaders/test.vert.spv",
+                   "../assets/shaders/test.frag.spv", true),
       m_Width(width), m_Height(height) {
     m_Screen.AddVertexBuffer(std::make_shared<VertexBuffer>(
         std::vector<float>{

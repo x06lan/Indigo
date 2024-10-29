@@ -126,17 +126,13 @@ std::string Program::LoadShaderFile(const std::string &filepath) {
 void Program::CompileBinShader(const GLuint shaderID,
                                const std::string &shaderFilepath) {
     std::string shaderSrc = LoadShaderFile(shaderFilepath);
-    const char *srcPtr = shaderSrc.c_str();
 
     LOG_TRACE("Compiling Shader: '{}'", shaderFilepath);
-    // glShaderSource(shaderID, 1, &srcPtr, NULL);
-    // glCompileShader(shaderID);
-
-    glShaderBinary(1, &shaderID, GL_SHADER_BINARY_FORMAT_SPIR_V, srcPtr,
-                   shaderSrc.size());
+    glShaderBinary(1, &shaderID, GL_SHADER_BINARY_FORMAT_SPIR_V,
+                   shaderSrc.data(), shaderSrc.size());
 
     // Specialize the shader (specify the entry point)
-    glSpecializeShader(shaderID, "main", 0, 0, 0);
+    glSpecializeShader(shaderID, "main", 0, nullptr, nullptr);
 
     GLint status = GL_FALSE;
 
