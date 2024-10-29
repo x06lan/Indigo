@@ -16,6 +16,25 @@ Program::Program(const std::string &vertexShaderFilepath,
 
     CompileShader(m_VertexShaderID, vertexShaderFilepath);
     CompileShader(m_FragmentShaderID, fragmentShaderFilepath);
+    // CompileBinShader(m_FragmentShaderID, fragmentShaderFilepath);
+
+    LinkProgram();
+}
+Program::Program(const std::string &vertexShaderFilepath,
+                 const std::string &fragmentShaderFilepath, bool spirv) {
+    m_ProgramID = glCreateProgram();
+    LOG_TRACE("Creating Program {}", m_ProgramID);
+
+    m_VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+    m_FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+
+    if (spirv) {
+        CompileBinShader(m_VertexShaderID, vertexShaderFilepath);
+        CompileBinShader(m_FragmentShaderID, fragmentShaderFilepath);
+    } else {
+        CompileShader(m_VertexShaderID, vertexShaderFilepath);
+        CompileShader(m_FragmentShaderID, fragmentShaderFilepath);
+    }
 
     LinkProgram();
 }
@@ -104,6 +123,36 @@ std::string Program::LoadShaderFile(const std::string &filepath) {
     return source;
 }
 
+void Program::CompileBinShader(const GLuint shaderID,
+                               const std::string &shaderFilepath) {
+    std::string shaderSrc = LoadShaderFile(shaderFilepath);
+    const char *srcPtr = shaderSrc.c_str();
+
+    LOG_TRACE("Compiling Shader: '{}'", shaderFilepath);
+    // glShaderSource(shaderID, 1, &srcPtr, NULL);
+    // glCompileShader(shaderID);
+
+    glShaderBinary(1, &shaderID, GL_SHADER_BINARY_FORMAT_SPIR_V, srcPtr,
+                   shaderSrc.size());
+
+    // Specialize the shader (specify the entry point)
+    glSpecializeShader(shaderID, "main", 0, 0, 0);
+
+    GLint status = GL_FALSE;
+
+    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
+    if (status != GL_TRUE) {
+        int infoLogLength;
+        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+        std::vector<char> errMessage(infoLogLength + 1);
+        glGetShaderInfoLog(shaderID, infoLogLength, NULL, &errMessage[0]);
+
+        LOG_ERROR("Failed to Compile Shader: '{}'\n{}", shaderFilepath,
+                  &errMessage[0]);
+    }
+    LOG_TRACE("Compiling Successful");
+}
 void Program::CompileShader(const GLuint shaderID,
                             const std::string &shaderFilepath) {
     std::string shaderSrc = LoadShaderFile(shaderFilepath);

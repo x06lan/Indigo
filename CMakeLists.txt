@@ -27,6 +27,7 @@ add_executable(Indigo
     src/renderer.cpp
     src/controller.cpp
     src/program.cpp
+    src/spirv.cpp
     src/camera.cpp
     src/importer.cpp
     src/vertex_array.cpp
@@ -48,6 +49,7 @@ add_executable(Indigo
     include/renderer.hpp
     include/controller.hpp
     include/program.hpp
+    include/spirv.hpp
     include/camera.hpp
     include/importer.hpp
     include/vertex_array.hpp

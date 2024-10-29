@@ -8,6 +8,8 @@ public:
     Program(const std::string &vertexShaderFilepath,
             const std::string &fragmentShaderFilepath);
     Program(const std::string &vertexShaderFilepath,
+            const std::string &fragmentShaderFilepath, bool spirv);
+    Program(const std::string &vertexShaderFilepath,
             const std::string &geometryShaderFilepath,
             const std::string &fragmentShaderFilepath);
     ~Program();
@@ -31,6 +33,7 @@ public:
 private:
     std::string LoadShaderFile(const std::string &filepath);
     void CompileShader(const GLuint shaderID, const std::string &shaderSrc);
+    void CompileBinShader(const GLuint shaderID, const std::string &shaderSrc);
     void LinkProgram();
 
 private:
