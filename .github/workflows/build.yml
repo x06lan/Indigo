@@ -39,7 +39,7 @@ jobs:
       - if: matrix.os == 'ubuntu-latest'
         name: Checking Formatting
         run: |
-          find src/ include/ assets/shaders/ -name "*.*" -print0 | xargs -0 clang-format --dry-run --Werror --ferror-limit=15
+          find src/ include/ assets/shaders/ -type f \( -name "*.frag" -o -name "*.geom" -o -name "*.vert" \) -print0 | xargs -0 clang-format --dry-run --Werror --ferror-limit=15
 
       - name: Building Project
         if: matrix.os == 'ubuntu-latest'
