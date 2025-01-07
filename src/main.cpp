@@ -39,9 +39,11 @@ int main(int argc, char **argv) {
     Controller::InitGUI(window);
     std::string vertPath = "../assets/shaders/test.vert.spv";
     std::string fragPath = "../assets/shaders/test.frag.spv";
-    if (argc > 3) {
-        vertPath = argv[2];
-        fragPath = argv[3];
+    if (argc == 2) {
+        fragPath = argv[1];
+    } else if (argc >= 3) {
+        vertPath = argv[1];
+        fragPath = argv[2];
     }
 
     ScreenRenderer screenRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, vertPath,
